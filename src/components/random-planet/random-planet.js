@@ -8,18 +8,18 @@ import ErrorIndicator from '../error-indicator';
 import './random-planet.css';
 
 export default class RandomPlanet extends Component {
-
   SwapiService = new SwapiService();
-
-  constructor() {
-    super();
-    this.updatePlanet();
-  }
 
   state = {
     planet: {},
     loading: true
   };
+
+  componentDidMount() {
+    this.updatePlanet();
+    setInterval(this.updatePlanet, 10000)
+    console.log('componentDidMount');
+  }
 
   onPlanetLoaded = (planet) => {
     this.setState({
@@ -36,8 +36,9 @@ export default class RandomPlanet extends Component {
     });
   };
 
-  updatePlanet() {
-    const id = Math.floor(Math.random()*25) + 2;
+  updatePlanet = () => {
+    console.log('update');
+    const id = Math.floor(Math.random()*25) + 3;
 
     this.SwapiService
       .getPlanet(id)
@@ -55,7 +56,7 @@ export default class RandomPlanet extends Component {
     const errorMessage = error ? <ErrorIndicator/> : null;
     const spinner = loading ? <Spinner/> : null;
     const content = hasData ? <PlanetView planet={planet}/> : null;
-
+    console.log('render');
 
     return (
       <div className="random-planet jumbotron rounded">
