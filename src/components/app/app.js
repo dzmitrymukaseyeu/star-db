@@ -3,34 +3,31 @@ import React, { Component } from 'react';
 import './app.css';
 
 import Header from '../header';
-import ItemList from '../item-list';
 import RandomPlanet from '../random-planet';
-import PersonDetails from '../person-details';
+import PeopePage from '../people-page/people-page';
+import ErrorIndicator from '../error-indicator';
 
 export default class App extends Component {   
   state = {
-    selectedPerson: null
+    hashError: false
   };
 
-  onPersonSelected = (id) => {
+  componentDidCatch() {
     this.setState({
-      selectedPerson: id
-    });
-  };
+      hashError: true
+    })
+  }
 
   render() {
+    if (this.state.hashError) {
+      return <ErrorIndicator/>
+    }
+
     return (
     <div>
       <Header />
       <RandomPlanet />
-      <div className="row mb2">
-        <div className="col-md-6">
-          <ItemList onItemSelected= {this.onPersonSelected} />
-        </div>
-        <div className="col-md-6">
-          <PersonDetails personId = {this.state.selectedPerson} />
-        </div>
-      </div>
+      <PeopePage/>
     </div>
     ) 
   }
